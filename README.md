@@ -3,9 +3,9 @@
 
 ## 목표
 > cell을 가로로 숫자 지정하여 배열하고 싶을때
-> columnCount 숫자에 따라 가로 갯수가 정해지기 때문에 그리드뷰 width 기반으로 cell의 width가 자동으로 늘어남 (가로에 대한 높이 가변 처리는 getGridViewHeight 이용하여 처리 가능함)
-> columnCount == 0 으로 셋팅시 Cell의 Xib의 Width 크기로대로 Cell의 가로 숫자가 가변으로 지정되어 그려짐 그리드뷰 가로 사이즈를 넘어가면 하단으로 내려감감
-> GirdView Xib에서 Cell의 이름이나 여려가지 셋팅이 가능하므로 코드가 거의 없음
+ columnCount 숫자에 따라 가로 갯수가 정해지기 때문에 그리드뷰 width 기반으로 cell의 width가 자동으로 늘어남 (가로에 대한 높이 가변 처리는 getGridViewHeight 이용하여 처리 가능함)
+ columnCount == 0 으로 셋팅시 Cell의 Xib의 Width 크기로대로 Cell의 가로 숫자가 가변으로 지정되어 그려짐 그리드뷰 가로 사이즈를 넘어가면 하단으로 내려감감
+ GirdView Xib에서 Cell의 이름이나 여려가지 셋팅이 가능하므로 코드가 거의 없음
 <br>
 
 ![SampleTestApp](https://github.com/pkh0225/PkhGridView/blob/master/ScreenShot.png)
