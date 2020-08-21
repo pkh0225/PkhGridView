@@ -7,7 +7,7 @@
 <br>
 
 ![SampleTestApp](https://github.com/pkh0225/PkhGridView/blob/master/ScreenShot.png)
-
+![SampleTestApp](https://github.com/pkh0225/PkhGridView/blob/master/ScreenShot2.png)
 
 <br>
 
