@@ -8,149 +8,155 @@
 
 import UIKit
 
-public let UISCREEN_WIDTH = UIScreen.main.bounds.width
-public let UISCREEN_HEIGHT = UIScreen.main.bounds.height
+private let PadRatio: CGFloat = 1.4
 
+public class GridViewData: NSObject {
 
-class GridViewData {
-    var itemList = [Any]()
-    var showLineCount: Int = 1
-    
-    init(itemList: [Any]) {
-        self.itemList = itemList
+    /// 그리드뷰에 전달될 데ㅐ이타
+    public var contentObj: Any?
+
+    /// 그리드뷰에 전달된 서브 데이타
+    public var subData: [String: Any]?
+
+    /// 그리뷰에 그려질  커스텀 뷰타입( nil일 경우 그리드뷰에 셋팅된 뷰가 불림)
+    public var cellType: PkhGridViewProtocol.Type?
+
+    /// 버튼이벤트나 기타 이벤트를 전달할 클로져
+    public var actionClosure: OnActionClosure?
+
+    override public init() {}
+    public init(contentObj: Any? = nil, subData: [String : Any]? = nil, cellType: PkhGridViewProtocol.Type? = nil, actionClosure: OnActionClosure? = nil) {
+        self.contentObj = contentObj
+        self.subData = subData
+        self.cellType = cellType
+        self.actionClosure = actionClosure
+    }
+
+    public func setContentObj(_ contentObj: Any?) -> Self {
+        self.contentObj = contentObj
+        return self
+    }
+
+    public func setSubData(_ subData: [String: Any]?) -> Self {
+        self.subData = subData
+        return self
+    }
+
+    public func setCellType(_ cellType: PkhGridViewProtocol.Type?) -> Self {
+        self.cellType = cellType
+        return self
+    }
+
+    public func setActionClosure(_ actionClosure: OnActionClosure?) -> Self {
+        self.actionClosure = actionClosure
+        return self
     }
 }
 
-typealias OnActionClosure = (_ name: String, _ object: Any?) -> Void
-typealias PkhGridViewSelectClosure = (_ view: PkhGridView, _ index: Int, _ data: Any?) -> Void
+public class GridViewListData: NSObject {
+    public var itemList = [GridViewData]()
 
-protocol PkhGridViewCellProtocol: UICollectionViewCell {
+    override public init() {}
+    public init(itemList: [GridViewData]) {
+        self.itemList = itemList
+    }
+
+    public func setItmeList(_ itemList: [GridViewData]) -> Self {
+        self.itemList = itemList
+        return self
+    }
+}
+
+/// 버튼이벤트나 기타 이벤트를 전달할 클로져
+///  - Parameters:
+///     - name: 발생한 이벤트 키
+///     - object: 전달해야할 데이타
+public typealias OnActionClosure = (_ name: String, _ object: Any?) -> Void
+
+public protocol PkhGridViewProtocol: UIView {
     var actionClosure: OnActionClosure? { get set }
-    
-    static func getGridViewHeight(data: Any?, width: CGFloat) -> CGFloat
-    func configure(_ data: Any?)
+
+    /// override 가능으로 높이 커스텀 가능 Default는 Xib width의 비율로 결정됨
+    static func getWidthByHeight(gridView: PkhGridView, data: Any?, subData: [String: Any]?, width: CGFloat) -> CGFloat
+
+    /// GridView에 데이가 들어오는 이벤트
+    /// - Parameters:
+    ///   - gridView: GridViewData
+    ///   - data: GridViewData.contentObj
+    ///   - subData: contentObj.subData
+    ///   - indexPath: indexPath
+    ///   - width: width
+    func configure(gridView: PkhGridView, data: Any?, subData: [String: Any]?, indexPath: IndexPath, width: CGFloat)
+
+}
+
+public extension PkhGridViewProtocol {
+    static func getWidthByHeight(gridView: PkhGridView, data: Any?, subData: [String: Any]?, width: CGFloat) -> CGFloat {
+        return self.fromXibSize().ratioHeight(setWidth: width)
+    }
 }
 
 
-class PkhGridView: UIView {
-    var collectionView: UICollectionView!
-    var actionClosure: OnActionClosure?
-    var cellType: PkhGridViewCellProtocol.Type!
-    
-    private var isCellRegistered: Bool = false
-    @IBInspectable var cellName: String {
+public class PkhGridView: UIView {
+
+    /// 그리드뷰에 그려질 공통 뷰
+    public var cellType: PkhGridViewProtocol.Type!
+    @IBInspectable public var cellName: String {
         get {
             return cellType.className
         }
         set {
-            cellType = (swiftClassFromString(newValue).self as! PkhGridViewCellProtocol.Type)
+            cellType = swiftClassFromString(newValue).self as? PkhGridViewProtocol.Type
         }
     }
-    @IBInspectable var columnCount: Int = 0 {
-        didSet {
-            if let layout = self.collectionView.collectionViewLayout as? GridViewFlowLayout {
-                layout.columnCount = columnCount
-            }
-        }
-    }
-    @IBInspectable var columnSpacing: CGFloat {
-        get {
-            if let layout = self.collectionView.collectionViewLayout as? GridViewFlowLayout {
-                return layout.minimumColumnSpacing
-            }
-            return 0
-        }
-        set {
-            if let layout = self.collectionView.collectionViewLayout as? GridViewFlowLayout {
-                layout.minimumColumnSpacing = newValue
-            }
-        }
-    }
-    @IBInspectable var lineSpacing: CGFloat {
-        get {
-            if let layout = self.collectionView.collectionViewLayout as? GridViewFlowLayout {
-                return layout.minimumInteritemSpacing
-            }
-            return 0
-        }
-        set {
-            if let layout = self.collectionView.collectionViewLayout as? GridViewFlowLayout {
-                layout.minimumInteritemSpacing = newValue
-            }
-        }
-    }
-    @IBInspectable var showLineCount: Int = 1 {
+    /// 가로에 표시될 아이템 수
+    @IBInspectable public var columnCount: Int = 0
+    /// 아이팀 좌우 간격
+    @IBInspectable public var columnSpacing: CGFloat = 0.0
+    /// 아이템 상하 간격
+    @IBInspectable public var lineSpacing: CGFloat = 0.0
+    /// 보여질 최대 줄 수
+    @IBInspectable public var showLineCount: Int = 1 {
         didSet {
             guard let data = self.data, data.itemList.count > 0 else { return }
-            if let layout = self.collectionView.collectionViewLayout as? GridViewFlowLayout {
-                layout.invalidateLayout()
+            if self.isHeightConstraint {
+                self.updateHeightConstraint(to: showLineHeight)
+            }
+            else {
                 self.frame.size.height = self.showLineHeight
             }
         }
     }
-    
-    @IBInspectable var heightFit: Bool = true
-    
-    @IBInspectable var isShowBottomLine: Bool {
-        get {
-            if let layout = self.collectionView.collectionViewLayout as? GridViewFlowLayout {
-                return layout.isShowBottomLine
-            }
-            return false
-        }
-        set {
-            if let layout = self.collectionView.collectionViewLayout as? GridViewFlowLayout {
-                layout.isShowBottomLine = newValue
-            }
-        }
-    }
-    
-    @IBInspectable var bottomLineColor: UIColor {
-        get {
-            if let layout = self.collectionView.collectionViewLayout as? GridViewFlowLayout {
-                return layout.bottomLineColor
-            }
-            return UIColor.gray
-        }
-        set {
-            if let layout = self.collectionView.collectionViewLayout as? GridViewFlowLayout {
-                layout.bottomLineColor = newValue
-            }
-        }
-    }
-    
-    
-    @IBInspectable public var topInset: CGFloat {
+    /// 모든 아이템뷰의 높이를 같이 만들기
+    @IBInspectable public var allItemHeightSame: Bool = false
+    @IBInspectable public var isVertical: Bool = false
+
+    @IBInspectable  public var topInset: CGFloat {
         get { return sectionInset.top }
         set { sectionInset.top = newValue }
     }
-    
-    @IBInspectable public var bottomInset: CGFloat {
+    @IBInspectable  public var bottomInset: CGFloat {
         get { return sectionInset.bottom }
         set { sectionInset.bottom = newValue }
     }
-    
-    @IBInspectable public var leftInset: CGFloat {
+    @IBInspectable  public var leftInset: CGFloat {
         get { return sectionInset.left }
         set { sectionInset.left = newValue }
     }
-    
-    @IBInspectable public var rightInset: CGFloat {
+    @IBInspectable  public var rightInset: CGFloat {
         get { return sectionInset.right }
         set { sectionInset.right = newValue }
     }
-    
-    var sectionInset: UIEdgeInsets = .zero
-    
-    var showLineHeight: CGFloat {
+    public var sectionInset: UIEdgeInsets = .zero
+    public var showLineHeight: CGFloat {
         guard self.columnHeights.count > 0 else { return 0 }
         if showLineCount == 0 {
             return maxLineHeight
         }
-       
+
         var height: CGFloat = 0
         height += sectionInset.top
-        for (i,h) in self.columnHeights.enumerated() {
+        for (i, h) in self.columnHeights.enumerated() {
             height += h
             height += lineSpacing
             if i >= showLineCount - 1 {
@@ -159,10 +165,10 @@ class PkhGridView: UIView {
         }
         height -= lineSpacing // 마지막줄 lineSpacing는 삭제한다.
         height += sectionInset.bottom
-        
+
         return height
     }
-    var maxLineHeight: CGFloat {
+    public var maxLineHeight: CGFloat {
         var height: CGFloat = 0
         height += sectionInset.top
         for h in self.columnHeights {
@@ -171,384 +177,256 @@ class PkhGridView: UIView {
         }
         height -= lineSpacing // 마지막줄 lineSpacing는 삭제한다.
         height += sectionInset.bottom
-        
+
         return height
-        
+
     }
-    func getItemSize(data: Any?) -> CGSize {
-        let width = self.frame.size.width - self.sectionInset.left - self.sectionInset.right
-        let unitWidth = (width - (columnSpacing * (CGFloat(self.columnCount) - 1))) / CGFloat(self.columnCount)
-        return CGSize(width: unitWidth, height: self.cellType.getGridViewHeight(data: data, width: unitWidth))
-    }
-    
-    var selectClosure: PkhGridViewSelectClosure?
-    var data: GridViewData?
-    var columnHeights : [CGFloat] = []
-    
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        UIInit()
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        UIInit()
-    }
-    
-    func UIInit() {
-//        clipsToBounds = true
-        let flowlayout = GridViewFlowLayout()
-        collectionView = UICollectionView(frame: bounds, collectionViewLayout: flowlayout)
-        collectionView.frame = bounds
-        collectionView.isScrollEnabled = false
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .clear
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        addSubview(collectionView)
-    }
-    
-    func configure(data: GridViewData?, actionClosure: OnActionClosure?) {
-        guard let data = data else { return }
-        if isCellRegistered == false {
-            isCellRegistered = true
-            collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: UICollectionViewCell.className)
-            collectionView.register(UINib(nibName: self.cellType.className, bundle: nil), forCellWithReuseIdentifier: self.cellType.className)
+
+    private func getItemSize(data: GridViewData) -> CGSize {
+        if columnCount == 0 {
+            columnCount = getAutoColumnCount()
+            isAutoCount = true
         }
-        
-        self.data = data
-        self.actionClosure = actionClosure
-        
-        if let layout = self.collectionView.collectionViewLayout as? GridViewFlowLayout {
-            layout.sectionInset = self.sectionInset
-        }
-        
-        self.setColumnHeights()
-        self.collectionView.reloadData()
-        
-        self.frame.size.height = self.showLineHeight
+        let unitWidth = (getViewWidth() - (columnSpacing * (CGFloat(columnCount) - 1))) / CGFloat(columnCount)
+        let cellType: PkhGridViewProtocol.Type = data.cellType ?? self.cellType
+        let unitHeight = cellType.getWidthByHeight(gridView: self, data: data.contentObj, subData: data.subData, width: unitWidth)
+        return CGSize(width: unitWidth, height: unitHeight)
     }
-    
+
+    private var beforeRect: CGRect = .zero
+    private var cells = [PkhGridViewProtocol]()
+    private var columnHeights: [CGFloat] = []
+    private var isAutoCount: Bool = false
+
+    // 펼쳐진 라인 이외에 보여줄 수 있는 셀들이 존재
+    var isExistMoreline = false
+    var data: GridViewListData?
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        self.reset()
+        self.updateUI()
+    }
+
+    public func maxLineCount() -> Int {
+        guard let data else { return 0 }
+        if showLineCount > 0 {
+            return showLineCount
+        }
+        return Int(ceil(CGFloat(data.itemList.count) / CGFloat(columnCount)))
+    }
+
+    public func reset() {
+        cells.forEach { $0.isHidden = true }
+    }
+
+    private func getView(_ item: GridViewData) -> PkhGridViewProtocol {
+        func isXibFileExists(_ fileName: String) -> Bool {
+            if let path: String = Bundle.main.path(forResource: fileName, ofType: "nib") {
+                if FileManager.default.fileExists(atPath: path) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        var view: PkhGridViewProtocol?
+        for item in cells {
+            if item.isHidden {
+                item.isHidden = false
+                view = item
+                break
+            }
+        }
+
+        if view == nil {
+            let cellType: PkhGridViewProtocol.Type! = item.cellType ?? self.cellType
+            if isXibFileExists(cellType.className) {
+                view = cellType.fromXib()
+            }
+            else {
+                view = cellType.init()
+            }
+
+            cells.append(view!)
+            self.addSubview(view!)
+        }
+
+        return view!
+    }
+
+    private func getViewWidth() -> CGFloat {
+        return self.frame.size.width - self.sectionInset.left - self.sectionInset.right
+    }
+
+    private func itemWidth() -> CGFloat {
+        let unitWidth = (getViewWidth() - (columnSpacing * (CGFloat(self.columnCount) - 1))) / CGFloat(self.columnCount)
+        return unitWidth
+    }
+
+    private func updateUI() {
+        guard (self.beforeRect != self.frame) || self.isHeightConstraint else { return }
+        guard let itemList = self.data?.itemList else { return }
+        self.beforeRect = self.frame
+
+        setColumnHeights()
+
+        let itemSizeWidth: CGFloat = itemWidth()
+        let maxLineCount: Int = self.maxLineCount()
+        var itemIndex: Int = 0
+        var lineCount: Int = 0
+        var itemHieght: CGFloat = 0
+        var xOffset: CGFloat = 0
+        var yOffset: CGFloat = 0
+
+        var maxY: CGFloat = sectionInset.top
+        self.isExistMoreline = false
+        for (idx, item) in itemList.enumerated() {
+            itemIndex = 0
+            if idx != 0 {
+                if isVertical {
+                    itemIndex = idx / maxLineCount
+                    lineCount = idx % maxLineCount
+                }
+                else {
+                    itemIndex = idx % columnCount
+                    lineCount = (idx / columnCount)
+                }
+            }
+            if showLineCount == 0 || lineCount < showLineCount {
+                let cell = getView(item)
+                xOffset = sectionInset.left + ((itemSizeWidth + self.columnSpacing) * CGFloat(itemIndex))
+                yOffset = maxY
+                itemHieght = self.columnHeights[lineCount]
+
+                cell.frame = CGRect(x: xOffset, y: yOffset, width: itemSizeWidth, height: itemHieght)
+
+                cell.actionClosure = item.actionClosure
+                // row: 라인 내에서 column, section: 라인
+                // row 가 영어로 행이지만 한 라인을 section 으로 봄
+                cell.configure(gridView: self, data: item.contentObj, subData: item.subData, indexPath: IndexPath(row: itemIndex, section: lineCount), width: itemSizeWidth)
+                if isVertical {
+                    maxY = cell.frame.maxY + self.lineSpacing
+                    if lineCount == (maxLineCount - 1) {
+                        maxY = sectionInset.top
+                    }
+                }
+                else {
+                    if itemIndex == (columnCount - 1) {
+                        maxY = cell.frame.maxY + self.lineSpacing
+                    }
+                }
+            }
+            else {
+                self.isExistMoreline = true
+                break
+            }
+        }
+
+        if self.isHeightConstraint {
+            self.updateHeightConstraint(to: self.showLineHeight)
+        }
+        else {
+            self.frame.size.height = self.showLineHeight
+        }
+    }
+
     func reloadData() {
-        self.collectionView.reloadData()
+        self.reset()
+        self.updateUI()
     }
-    
-    
-    func getAutoColumnCount() -> Int {
-        let itemWidth =  self.cellType.fromNib(cache: true).frame.size.width
-        let ViewWidth = self.frame.size.width - self.sectionInset.left - self.sectionInset.right
-        
+
+    private func getAutoColumnCount() -> Int {
+        var itemWidth = self.cellType.fromXib(cache: true).frame.size.width
+        if UIDevice.current.userInterfaceIdiom != .phone {
+            itemWidth = itemWidth * PadRatio
+        }
+
         var maxX: CGFloat = itemWidth
         var displayAbleCount = 0
-        
-        while maxX <= ViewWidth {
+
+        let viewWidth = getViewWidth()
+        while maxX <= viewWidth {
             displayAbleCount += 1
             maxX += itemWidth + columnSpacing
         }
-        
+
         return displayAbleCount
     }
-    
-    func setColumnHeights() {
+
+    private func setColumnHeights() {
         guard let data = self.data else { return }
-        
-        if columnCount == 0 {
+
+        if columnCount == 0 || isAutoCount {
+            isAutoCount = true
             columnCount = self.getAutoColumnCount()
         }
-                
+
+        guard columnCount != 0 else { return }
+
         self.columnHeights.removeAll()
         var itemHegihts = [CGFloat]()
         for item in data.itemList {
             let heigth = self.getItemSize(data: item).height
             itemHegihts.append(heigth)
         }
-        
-        let maxLineCount: Int = Int(ceil(CGFloat(itemHegihts.count) / CGFloat(columnCount)))
+
+        let maxLineCount: Int = self.maxLineCount()
         self.columnHeights.reserveCapacity(maxLineCount)
         var maxHeight: CGFloat = 0
         var itemIndex: Int = 1
-        for h in itemHegihts {
-            maxHeight = max(maxHeight, h)
-            itemIndex += 1
-            if itemIndex > columnCount {
-                self.columnHeights.append(maxHeight)
-                maxHeight = 0
-                itemIndex = 1
+
+        if self.isVertical {
+            for i in 0..<maxLineCount {
+                for j in 0..<columnCount {
+                    let h = itemHegihts[safe: i + j * maxLineCount] ?? 0
+                    if self.columnHeights.count > i {
+                        self.columnHeights[i] = max(self.columnHeights[i], h)
+                    }
+                    else {
+                        self.columnHeights.append(h)
+                    }
+                }
             }
         }
-        if maxHeight > 0 {
-            self.columnHeights.append(maxHeight)
+        else {
+            for h in itemHegihts {
+                maxHeight = max(maxHeight, h)
+                itemIndex += 1
+                if itemIndex > columnCount {
+                    self.columnHeights.append(maxHeight)
+                    maxHeight = 0
+                    itemIndex = 1
+                }
+            }
+            if maxHeight > 0 {
+                self.columnHeights.append(maxHeight)
+            }
         }
-        
-        
-        if heightFit == false {
+
+        if allItemHeightSame {
             var maxHeight: CGFloat = 0
-            self.columnHeights.forEach({ maxHeight = max($0,maxHeight) })
+            self.columnHeights.forEach({ maxHeight = max($0, maxHeight) })
             for i in 0..<self.columnHeights.count {
                 self.columnHeights[i] = maxHeight
             }
         }
-        
-     
-        if let layout = self.collectionView.collectionViewLayout as? GridViewFlowLayout {
-            layout.columnHeights = columnHeights
-        }
-    }
-    
-}
-
-extension PkhGridView: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let data = self.data else { return 0 }
-        return data.itemList.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        func defaultReturn() -> UICollectionViewCell {
-            return collectionView.dequeueReusableCell(withReuseIdentifier: UICollectionViewCell.className, for: indexPath)
-        }
-        
-        guard let data = self.data else { return defaultReturn() }
-        let dataItem = data.itemList[indexPath.row]
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellType.className, for: indexPath)
-        if let cell = cell as? PkhGridViewCellProtocol {
-            cell.actionClosure = actionClosure
-            cell.configure(dataItem)
-        }
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let data = self.data else { return .zero }
-        
-        let dataItem = data.itemList[indexPath.row]
-        return getItemSize(data: dataItem)
     }
 }
 
-
-class GridViewFlowLayout : UICollectionViewLayout {
-    
-    var columnCount : Int {
-        didSet{
-            invalidateLayout()
-        }}
-    
-    var minimumColumnSpacing : CGFloat {
-        didSet{
-            invalidateLayout()
-        }}
-    
-    var minimumInteritemSpacing : CGFloat {
-        didSet{
-            invalidateLayout()
-        }}
-    
-    var sectionInset : UIEdgeInsets {
-        didSet{
-            invalidateLayout()
-        }}
-    
-    var isShowBottomLine: Bool = false
-    var bottomLineColor: UIColor = UIColor.gray
-    
-    var columnHeights : [CGFloat] = []
-    var sectionItemAttributes : [[UICollectionViewLayoutAttributes]] = []
-    var allItemAttributes : [UICollectionViewLayoutAttributes] = []
-    var unionRects : [CGRect] = []
-    let unionSize = 20
-    var lineViews = [UIView]()
-    
-    
-    override init(){
-        self.columnCount = 2
-        self.minimumInteritemSpacing = 10
-        self.minimumColumnSpacing = 10
-        self.sectionInset = UIEdgeInsets.zero
-        
-        super.init()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func itemWidth() -> CGFloat {
-        let width:CGFloat = self.collectionView!.frame.size.width - sectionInset.left - sectionInset.right
-        let spaceColumCount:CGFloat = CGFloat(self.columnCount-1)
-        return (width - (spaceColumCount*self.minimumColumnSpacing)) / CGFloat(self.columnCount)
-    }
-    
-    override func prepare(){
-        super.prepare()
-        
-        guard let collectionView = self.collectionView else { return }
-        guard self.columnHeights.count > 0 else { return }
-        let numberOfSections = collectionView.numberOfSections
-        if numberOfSections == 0 {
-            return
-        }
-        
-        self.unionRects.removeAll()
-        self.allItemAttributes.removeAll()
-        self.sectionItemAttributes.removeAll()
-        
-        let itemCount = collectionView.numberOfItems(inSection: 0)
-        let itemSizeWidth: CGFloat = itemWidth()
-        
-        var maxY: CGFloat = sectionInset.top
-        var attributes = UICollectionViewLayoutAttributes()
-        var itemAttributes: [UICollectionViewLayoutAttributes] = []
-        for idx in 0 ..< itemCount {
-            let indexPath = IndexPath(item: idx, section: 0)
-            
-            var itemIndex: Int = 0
-            if idx != 0 {
-                itemIndex = idx % columnCount
-            }
-            let lineCount: Int = (idx / columnCount)
-            let itemHieght = self.columnHeights[lineCount]
-            
-            let xOffset = sectionInset.left + ((itemSizeWidth + self.minimumColumnSpacing) * CGFloat(itemIndex))
-            let yOffset = maxY
-            
-            attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-            attributes.frame = CGRect(x: xOffset, y: yOffset, width: itemSizeWidth, height: itemHieght)
-            itemAttributes.append(attributes)
-            self.allItemAttributes.append(attributes)
-            if itemIndex == (columnCount - 1) {
-                maxY = attributes.frame.maxY + self.minimumInteritemSpacing
-            }
-            
-        }
-        self.sectionItemAttributes.append(itemAttributes)
-        
-        
-        var idx = 0
-        let itemCounts = self.allItemAttributes.count
-        while(idx < itemCounts){
-            let rect1 = self.allItemAttributes[idx].frame
-            idx = min(idx + unionSize, itemCounts) - 1
-            let rect2 = self.allItemAttributes[idx].frame
-            self.unionRects.append(rect1.union(rect2))
-            idx += 1
-        }
-        
-        lineViews.forEach({ $0.isHidden = true })
-        if isShowBottomLine {
-            showLineView()
-        }
-    }
-    
-    func getLineView(index: Int) -> UIView {
-        guard let collectionView = self.collectionView else { return UIView() }
-        
-        let lineView: UIView
-        if index < lineViews.count {
-            lineView = lineViews[index]
-        }
-        else {
-            lineView = UIView(frame: CGRect(x: 0, y: 0, width: collectionView.frame.size.width, height: 1))
-            lineView.autoresizingMask = [.flexibleWidth]
-            lineViews.append(lineView)
-            collectionView.addSubview(lineView)
-        }
-        lineView.backgroundColor = bottomLineColor
-        lineView.isHidden = false
-        return lineView
-    }
-    
-    
-    func showLineView() {
-        
-        var lineYs = [CGFloat]()
-        for att in allItemAttributes {
-            if lineYs.last != att.frame.maxY {
-                lineYs.append(att.frame.maxY)
-            }
-        }
-        lineYs.removeLast() // 마지막줄을 표시하지 않는다.
-        
-        for (i,y) in lineYs.enumerated() {
-            let lineView = getLineView(index: i)
-            lineView.frame.origin.y = y - 1
-        }
-    }
-    
-    override var collectionViewContentSize : CGSize {
-        guard let collectionView = self.collectionView else { return CGSize.zero }
-        let numberOfSections = collectionView.numberOfSections
-        if numberOfSections == 0{
-            return CGSize.zero
-        }
-        
-        var contentSize = collectionView.bounds.size
-        let height = self.allItemAttributes.last?.frame.maxY ?? 0
-        contentSize.height = CGFloat(height)
-        return  contentSize
-    }
-    
-    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes?{
-        if indexPath.section >= self.sectionItemAttributes.count {
-            return nil
-        }
-        if indexPath.item >= (self.sectionItemAttributes[indexPath.section]).count {
-            return nil;
-        }
-        let list = self.sectionItemAttributes[indexPath.section]
-        return list[indexPath.item]
-    }
-    
-    override func layoutAttributesForElements (in rect : CGRect) -> [UICollectionViewLayoutAttributes] {
-        var begin = 0, end = self.unionRects.count
-        var attrs: [UICollectionViewLayoutAttributes] = []
-        
-        for i in 0 ..< end {
-            if rect.intersects(self.unionRects[i]) {
-                begin = i * unionSize;
-                break
-            }
-        }
-        var i = self.unionRects.count - 1
-        while i>=0 {
-            if rect.intersects(self.unionRects[i]){
-                end = min((i+1)*unionSize, self.allItemAttributes.count)
-                break
-            }
-            i -= 1
-        }
-        for i in begin ..< end {
-            let attr = self.allItemAttributes[i]
-            if rect.intersects(attr.frame) {
-                attrs.append(attr)
-            }
-        }
-        
-        return attrs
-    }
-    
-    override func shouldInvalidateLayout (forBoundsChange newBounds : CGRect) -> Bool {
-        let oldBounds = self.collectionView!.bounds
-        if newBounds.width != oldBounds.width{
-            return true
-        }
-        return false
-    }
-    
-}
  
-fileprivate var CacheViewNibs = NSCache<NSString, UIView>()
+fileprivate var CacheViewNibs = {
+    let cache = NSCache<NSString, UIView>()
+    cache.countLimit = 300
+    return cache
+}()
+
 extension UIView {
-    
-    class func fromNib(cache: Bool = false) -> Self {
-        return fromNib(cache: cache, as: self)
+    class func fromXib(cache: Bool = false) -> Self {
+        return fromXib(cache: cache, as: self)
     }
     
-    private class func fromNib<T>(cache: Bool = false, as type: T.Type) -> T {
+    private class func fromXib<T>(cache: Bool = false, as type: T.Type) -> T {
         if cache, let view = CacheViewNibs.object(forKey: self.className as NSString) {
             return view as! T
         }
@@ -559,7 +437,106 @@ extension UIView {
         return view as! T
     }
     
-    class func fromNibSize() -> CGSize {
-        return fromNib(cache: true).frame.size
+    class func fromXibSize() -> CGSize {
+        return fromXib(cache: true).frame.size
+    }
+
+
+}
+
+extension CGSize {
+    public func ratioHeight(setWidth: CGFloat) -> CGFloat {
+        guard self.width != 0 else { return 0 }
+        if self.width == setWidth {
+            return self.height
+        }
+        let origin: CGFloat = self.height * setWidth / self.width
+        return origin
     }
 }
+
+extension UIView {
+    var isHeightConstraint: Bool {
+        if let _ = self.constraints.first(where: { $0.firstAttribute == .height }) {
+            return true
+        }
+        return false
+    }
+
+    var isWidhConstraint: Bool {
+        if let _ = self.constraints.first(where: { $0.firstAttribute == .width }) {
+            return true
+        }
+        return false
+    }
+
+    func updateHeightConstraint(to newHeight: CGFloat) {
+        // height 제약 조건이 있는지 확인
+        if let heightConstraint = self.constraints.first(where: { $0.firstAttribute == .height }) {
+            // 값 변경
+            heightConstraint.constant = newHeight
+        } else {
+            // height 제약 조건이 없다면 새로 추가
+            let newConstraint = self.heightAnchor.constraint(equalToConstant: newHeight)
+            newConstraint.isActive = true
+        }
+    }
+
+    func updateWidthConstraint(to newWidth: CGFloat) {
+        // height 제약 조건이 있는지 확인
+        if let widthConstraint = self.constraints.first(where: { $0.firstAttribute == .width }) {
+            // 값 변경
+            widthConstraint.constant = newWidth
+        } else {
+            // height 제약 조건이 없다면 새로 추가
+            let newConstraint = self.widthAnchor.constraint(equalToConstant: newWidth)
+            newConstraint.isActive = true
+        }
+    }
+}
+
+extension Array {
+    ///   Gets the object at the specified index, if it exists.
+    public subscript(safe index: Int?) -> Element? {
+        guard let index else { return nil }
+        if indices.contains(index) {
+            return self[index]
+        }
+        else {
+            return nil
+        }
+    }
+}
+
+
+@inline(__always) public func swiftClassFromString(_ className: String, bundleName: String = "") -> AnyClass? {
+
+    // get the project name
+    if  let appName = Bundle.main.object(forInfoDictionaryKey:"CFBundleName") as? String {
+        // generate the full name of your class (take a look into your "YourProject-swift.h" file)
+        let classStringName = "\(appName).\(className)"
+        guard let aClass = NSClassFromString(classStringName) else {
+            let classStringName = "\(bundleName).\(className)"
+            guard let aClass = NSClassFromString(classStringName) else {
+                //                print(">>>>>>>>>>>>> [ \(className) ] : swiftClassFromString Create Fail <<<<<<<<<<<<<<")
+                return nil
+
+            }
+            return aClass
+        }
+        return aClass
+    }
+    //    print(">>>>>>>>>>>>> [ \(className) ] : swiftClassFromString Create Fail <<<<<<<<<<<<<<")
+    return nil
+}
+
+extension NSObject {
+    public var className: String {
+        return String(describing: type(of:self))
+    }
+
+    public class var className: String {
+        return String(describing: self)
+    }
+}
+

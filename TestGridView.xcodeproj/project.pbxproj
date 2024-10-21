@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		202D607E2CC6223900756F1D /* TestCellCollectionViewCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 202D607D2CC6223900756F1D /* TestCellCollectionViewCell2.xib */; };
+		202D607F2CC6223900756F1D /* TestCellCollectionViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D607C2CC6223900756F1D /* TestCellCollectionViewCell2.swift */; };
 		520F384E21228F100081B956 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F384D21228F100081B956 /* AppDelegate.swift */; };
 		520F385021228F100081B956 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F384F21228F100081B956 /* ViewController.swift */; };
 		520F385321228F100081B956 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 520F385121228F100081B956 /* Main.storyboard */; };
@@ -14,13 +16,14 @@
 		520F385821228F110081B956 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 520F385621228F110081B956 /* LaunchScreen.storyboard */; };
 		520F3889212299A10081B956 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 520F3888212299A10081B956 /* README.md */; };
 		529DF5ED24EF8B2A00A15869 /* PkhGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529DF5EC24EF8B2A00A15869 /* PkhGridView.swift */; };
-		529DF5EF24EF8BC300A15869 /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529DF5EE24EF8BC300A15869 /* NSObjectExtensions.swift */; };
 		529DF5F224EF961300A15869 /* TestCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529DF5F024EF961300A15869 /* TestCellCollectionViewCell.swift */; };
 		529DF5F324EF961300A15869 /* TestCellCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529DF5F124EF961300A15869 /* TestCellCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		520F384A21228F100081B956 /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		202D607C2CC6223900756F1D /* TestCellCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCellCollectionViewCell2.swift; sourceTree = "<group>"; };
+		202D607D2CC6223900756F1D /* TestCellCollectionViewCell2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestCellCollectionViewCell2.xib; sourceTree = "<group>"; };
+		520F384A21228F100081B956 /* TestGridView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestGridView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		520F384D21228F100081B956 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		520F384F21228F100081B956 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		520F385221228F100081B956 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -29,7 +32,6 @@
 		520F385921228F110081B956 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		520F3888212299A10081B956 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		529DF5EC24EF8B2A00A15869 /* PkhGridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PkhGridView.swift; sourceTree = "<group>"; };
-		529DF5EE24EF8BC300A15869 /* NSObjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectExtensions.swift; sourceTree = "<group>"; };
 		529DF5F024EF961300A15869 /* TestCellCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCellCollectionViewCell.swift; sourceTree = "<group>"; };
 		529DF5F124EF961300A15869 /* TestCellCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestCellCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,7 +60,7 @@
 		520F384B21228F100081B956 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				520F384A21228F100081B956 /* Test.app */,
+				520F384A21228F100081B956 /* TestGridView.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -68,12 +70,14 @@
 			children = (
 				520F384D21228F100081B956 /* AppDelegate.swift */,
 				520F384F21228F100081B956 /* ViewController.swift */,
-				520F385121228F100081B956 /* Main.storyboard */,
-				520F385421228F110081B956 /* Assets.xcassets */,
-				520F385621228F110081B956 /* LaunchScreen.storyboard */,
-				520F385921228F110081B956 /* Info.plist */,
 				529DF5F024EF961300A15869 /* TestCellCollectionViewCell.swift */,
 				529DF5F124EF961300A15869 /* TestCellCollectionViewCell.xib */,
+				202D607C2CC6223900756F1D /* TestCellCollectionViewCell2.swift */,
+				202D607D2CC6223900756F1D /* TestCellCollectionViewCell2.xib */,
+				520F385121228F100081B956 /* Main.storyboard */,
+				520F385621228F110081B956 /* LaunchScreen.storyboard */,
+				520F385421228F110081B956 /* Assets.xcassets */,
+				520F385921228F110081B956 /* Info.plist */,
 			);
 			path = Test;
 			sourceTree = "<group>";
@@ -81,7 +85,6 @@
 		520F38812122999B0081B956 /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				529DF5EE24EF8BC300A15869 /* NSObjectExtensions.swift */,
 				529DF5EC24EF8B2A00A15869 /* PkhGridView.swift */,
 			);
 			path = Class;
@@ -90,9 +93,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		520F384921228F100081B956 /* Test */ = {
+		520F384921228F100081B956 /* TestGridView */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 520F385C21228F110081B956 /* Build configuration list for PBXNativeTarget "Test" */;
+			buildConfigurationList = 520F385C21228F110081B956 /* Build configuration list for PBXNativeTarget "TestGridView" */;
 			buildPhases = (
 				520F384621228F100081B956 /* Sources */,
 				520F384721228F100081B956 /* Frameworks */,
@@ -102,9 +105,9 @@
 			);
 			dependencies = (
 			);
-			name = Test;
+			name = TestGridView;
 			productName = Test;
-			productReference = 520F384A21228F100081B956 /* Test.app */;
+			productReference = 520F384A21228F100081B956 /* TestGridView.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -122,7 +125,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 520F384521228F100081B956 /* Build configuration list for PBXProject "Test" */;
+			buildConfigurationList = 520F384521228F100081B956 /* Build configuration list for PBXProject "TestGridView" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -135,7 +138,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				520F384921228F100081B956 /* Test */,
+				520F384921228F100081B956 /* TestGridView */,
 			);
 		};
 /* End PBXProject section */
@@ -150,6 +153,7 @@
 				520F3889212299A10081B956 /* README.md in Resources */,
 				529DF5F324EF961300A15869 /* TestCellCollectionViewCell.xib in Resources */,
 				520F385321228F100081B956 /* Main.storyboard in Resources */,
+				202D607E2CC6223900756F1D /* TestCellCollectionViewCell2.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,10 +165,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				520F385021228F100081B956 /* ViewController.swift in Sources */,
+				202D607F2CC6223900756F1D /* TestCellCollectionViewCell2.swift in Sources */,
 				529DF5ED24EF8B2A00A15869 /* PkhGridView.swift in Sources */,
 				529DF5F224EF961300A15869 /* TestCellCollectionViewCell.swift in Sources */,
 				520F384E21228F100081B956 /* AppDelegate.swift in Sources */,
-				529DF5EF24EF8BC300A15869 /* NSObjectExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,7 +351,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		520F384521228F100081B956 /* Build configuration list for PBXProject "Test" */ = {
+		520F384521228F100081B956 /* Build configuration list for PBXProject "TestGridView" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				520F385A21228F110081B956 /* Debug */,
@@ -356,7 +360,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		520F385C21228F110081B956 /* Build configuration list for PBXNativeTarget "Test" */ = {
+		520F385C21228F110081B956 /* Build configuration list for PBXNativeTarget "TestGridView" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				520F385D21228F110081B956 /* Debug */,

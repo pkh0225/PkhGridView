@@ -8,25 +8,14 @@
 
 import UIKit
 
-class TestCellCollectionViewCell: UICollectionViewCell, PkhGridViewProtocol {
+class TestCellCollectionViewCell2: UICollectionViewCell, PkhGridViewProtocol {
     var actionClosure: OnActionClosure?
     var data: String?
     @IBOutlet weak var titleLabel: UILabel!
 
     // override 가능으로 높이 커스텀 가능 Default는 Xib width의 비율로 결정됨
     static func getWidthByHeight(gridView: PkhGridView, data: Any?, subData: [String: Any]?, width: CGFloat) -> CGFloat {
-
-        if let data = data as? String {
-            switch data {
-            case "테스트1":
-                return 100
-            case "테스트2":
-                return 200
-            default:
-                break
-            }
-        }
-        return self.fromXibSize().ratioHeight(setWidth: width)
+        return 100
     }
 
     override func awakeFromNib() {
