@@ -10,7 +10,6 @@
 		202D607E2CC6223900756F1D /* TestCellCollectionViewCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 202D607D2CC6223900756F1D /* TestCellCollectionViewCell2.xib */; };
 		202D607F2CC6223900756F1D /* TestCellCollectionViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D607C2CC6223900756F1D /* TestCellCollectionViewCell2.swift */; };
 		20BA5B612CC7357E0064C80B /* PkhGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA5B5E2CC7357E0064C80B /* PkhGridView.swift */; };
-		20BA5B632CC735F60064C80B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 20BA5B622CC735F60064C80B /* README.md */; };
 		520F384E21228F100081B956 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F384D21228F100081B956 /* AppDelegate.swift */; };
 		520F385021228F100081B956 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F384F21228F100081B956 /* ViewController.swift */; };
 		520F385321228F100081B956 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 520F385121228F100081B956 /* Main.storyboard */; };
@@ -24,7 +23,6 @@
 		202D607C2CC6223900756F1D /* TestCellCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCellCollectionViewCell2.swift; sourceTree = "<group>"; };
 		202D607D2CC6223900756F1D /* TestCellCollectionViewCell2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestCellCollectionViewCell2.xib; sourceTree = "<group>"; };
 		20BA5B5E2CC7357E0064C80B /* PkhGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PkhGridView.swift; sourceTree = "<group>"; };
-		20BA5B622CC735F60064C80B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		520F384A21228F100081B956 /* TestGridView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestGridView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		520F384D21228F100081B956 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		520F384F21228F100081B956 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -67,7 +65,6 @@
 		520F384121228F100081B956 = {
 			isa = PBXGroup;
 			children = (
-				20BA5B622CC735F60064C80B /* README.md */,
 				20BA5B602CC7357E0064C80B /* Sources */,
 				520F384C21228F100081B956 /* TestGridView */,
 				520F384B21228F100081B956 /* Products */,
@@ -157,7 +154,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20BA5B632CC735F60064C80B /* README.md in Resources */,
 				520F385821228F110081B956 /* LaunchScreen.storyboard in Resources */,
 				520F385521228F110081B956 /* Assets.xcassets in Resources */,
 				529DF5F324EF961300A15869 /* TestCellCollectionViewCell.xib in Resources */,
