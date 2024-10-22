@@ -199,8 +199,8 @@ public class PkhGridView: UIView {
     private var isAutoCount: Bool = false
 
     // 펼쳐진 라인 이외에 보여줄 수 있는 셀들이 존재
-    var isExistMoreline = false
-    var data: GridViewListData?
+    public var isExistMoreline = false
+    public var data: GridViewListData?
 
     public override func layoutSubviews() {
         super.layoutSubviews()
@@ -331,7 +331,7 @@ public class PkhGridView: UIView {
         }
     }
 
-    func reloadData() {
+    public func reloadData() {
         self.reset()
         self.updateUI()
     }
