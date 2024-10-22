@@ -415,7 +415,7 @@ public class PkhGridView: UIView {
 }
 
  
-fileprivate var CacheViewNibs = {
+@MainActor fileprivate var CacheViewNibs = {
     let cache = NSCache<NSString, UIView>()
     cache.countLimit = 300
     return cache
