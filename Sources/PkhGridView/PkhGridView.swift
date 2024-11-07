@@ -8,10 +8,7 @@
 
 import UIKit
 
-private let PadRatio: CGFloat = 1.4
-
 public class GridViewData: NSObject {
-
     /// 그리드뷰에 전달될 데ㅐ이타
     public var contentObj: Any?
 
@@ -22,10 +19,10 @@ public class GridViewData: NSObject {
     public var cellType: PkhGridViewProtocol.Type?
 
     /// 버튼이벤트나 기타 이벤트를 전달할 클로져
-    public var actionClosure: OnActionClosure?
+    public var actionClosure: ((_ name: String, _ object: Any?) -> Void)?
 
     override public init() {}
-    public init(contentObj: Any? = nil, subData: [String : Any]? = nil, cellType: PkhGridViewProtocol.Type? = nil, actionClosure: OnActionClosure? = nil) {
+    public init(contentObj: Any? = nil, subData: [String : Any]? = nil, cellType: PkhGridViewProtocol.Type? = nil, actionClosure: ((_ name: String, _ object: Any?) -> Void)? = nil) {
         self.contentObj = contentObj
         self.subData = subData
         self.cellType = cellType
@@ -47,7 +44,7 @@ public class GridViewData: NSObject {
         return self
     }
 
-    public func setActionClosure(_ actionClosure: OnActionClosure?) -> Self {
+    public func setActionClosure(_ actionClosure: ((_ name: String, _ object: Any?) -> Void)?) -> Self {
         self.actionClosure = actionClosure
         return self
     }
@@ -71,10 +68,9 @@ public class GridViewListData: NSObject {
 ///  - Parameters:
 ///     - name: 발생한 이벤트 키
 ///     - object: 전달해야할 데이타
-public typealias OnActionClosure = (_ name: String, _ object: Any?) -> Void
 
 public protocol PkhGridViewProtocol: UIView {
-    var actionClosure: OnActionClosure? { get set }
+    var actionClosure: ((_ name: String, _ object: Any?) -> Void)? { get set }
 
     /// override 가능으로 높이 커스텀 가능 Default는 Xib width의 비율로 결정됨
     static func getWidthByHeight(gridView: PkhGridView, data: Any?, subData: [String: Any]?, width: CGFloat) -> CGFloat
@@ -98,7 +94,6 @@ public extension PkhGridViewProtocol {
 
 
 public class PkhGridView: UIView {
-
     /// 그리드뷰에 그려질 공통 뷰
     public var cellType: PkhGridViewProtocol.Type!
     @IBInspectable public var cellName: String {
@@ -181,6 +176,7 @@ public class PkhGridView: UIView {
         return height
 
     }
+    var padRatio: CGFloat = 1.4
 
     private func getItemSize(data: GridViewData) -> CGSize {
         if columnCount == 0 {
@@ -339,7 +335,7 @@ public class PkhGridView: UIView {
     private func getAutoColumnCount() -> Int {
         var itemWidth = self.cellType.fromXib(cache: true).frame.size.width
         if UIDevice.current.userInterfaceIdiom != .phone {
-            itemWidth = itemWidth * PadRatio
+            itemWidth = itemWidth * self.padRatio
         }
 
         var maxX: CGFloat = itemWidth
