@@ -53,7 +53,7 @@ class ViewController: UIViewController {
 
     func showAlert(name: String, object: Any?) {
         DispatchQueue.main.async {
-            func run() {
+            @MainActor func run() {
                 let alert = UIAlertController(title: "\(name)", message: String(describing: object), preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)

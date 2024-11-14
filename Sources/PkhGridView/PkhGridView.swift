@@ -68,7 +68,7 @@ public class GridViewListData: NSObject {
 ///  - Parameters:
 ///     - name: 발생한 이벤트 키
 ///     - object: 전달해야할 데이타
-
+@MainActor
 public protocol PkhGridViewProtocol: UIView {
     var actionClosure: ((_ name: String, _ object: Any?) -> Void)? { get set }
 
