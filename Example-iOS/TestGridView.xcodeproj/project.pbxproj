@@ -3,13 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		202D607E2CC6223900756F1D /* TestCellCollectionViewCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 202D607D2CC6223900756F1D /* TestCellCollectionViewCell2.xib */; };
 		202D607F2CC6223900756F1D /* TestCellCollectionViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D607C2CC6223900756F1D /* TestCellCollectionViewCell2.swift */; };
-		208236902CEAF43600C4F065 /* PkhGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2082368D2CEAF43600C4F065 /* PkhGridView.swift */; };
+		208236932CEAF4C600C4F065 /* PkhGridView in Frameworks */ = {isa = PBXBuildFile; productRef = 208236922CEAF4C600C4F065 /* PkhGridView */; };
 		520F384E21228F100081B956 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F384D21228F100081B956 /* AppDelegate.swift */; };
 		520F385021228F100081B956 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F384F21228F100081B956 /* ViewController.swift */; };
 		520F385321228F100081B956 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 520F385121228F100081B956 /* Main.storyboard */; };
@@ -22,7 +22,6 @@
 /* Begin PBXFileReference section */
 		202D607C2CC6223900756F1D /* TestCellCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCellCollectionViewCell2.swift; sourceTree = "<group>"; };
 		202D607D2CC6223900756F1D /* TestCellCollectionViewCell2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestCellCollectionViewCell2.xib; sourceTree = "<group>"; };
-		2082368D2CEAF43600C4F065 /* PkhGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PkhGridView.swift; sourceTree = "<group>"; };
 		520F384A21228F100081B956 /* TestGridView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestGridView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		520F384D21228F100081B956 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		520F384F21228F100081B956 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -39,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				208236932CEAF4C600C4F065 /* PkhGridView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,27 +52,9 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		2082368E2CEAF43600C4F065 /* PkhGridView */ = {
-			isa = PBXGroup;
-			children = (
-				2082368D2CEAF43600C4F065 /* PkhGridView.swift */,
-			);
-			path = PkhGridView;
-			sourceTree = "<group>";
-		};
-		2082368F2CEAF43600C4F065 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				2082368E2CEAF43600C4F065 /* PkhGridView */,
-			);
-			name = Sources;
-			path = ../Sources;
-			sourceTree = SOURCE_ROOT;
-		};
 		520F384121228F100081B956 = {
 			isa = PBXGroup;
 			children = (
-				2082368F2CEAF43600C4F065 /* Sources */,
 				520F384C21228F100081B956 /* TestGridView */,
 				204164302CEAD95100E34ED0 /* Frameworks */,
 				520F384B21228F100081B956 /* Products */,
@@ -149,6 +131,7 @@
 			);
 			mainGroup = 520F384121228F100081B956;
 			packageReferences = (
+				208236912CEAF4C600C4F065 /* XCLocalSwiftPackageReference "../../PkhGridView" */,
 			);
 			productRefGroup = 520F384B21228F100081B956 /* Products */;
 			projectDirPath = "";
@@ -179,7 +162,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				208236902CEAF43600C4F065 /* PkhGridView.swift in Sources */,
 				520F385021228F100081B956 /* ViewController.swift in Sources */,
 				202D607F2CC6223900756F1D /* TestCellCollectionViewCell2.swift in Sources */,
 				529DF5F224EF961300A15869 /* TestCellCollectionViewCell.swift in Sources */,
@@ -387,6 +369,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		208236912CEAF4C600C4F065 /* XCLocalSwiftPackageReference "../../PkhGridView" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../PkhGridView;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		208236922CEAF4C600C4F065 /* PkhGridView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PkhGridView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 520F384221228F100081B956 /* Project object */;
 }

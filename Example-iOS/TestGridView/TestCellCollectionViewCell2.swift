@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PkhGridView
 
 class TestCellCollectionViewCell2: UICollectionViewCell, PkhGridViewProtocol {
     var actionClosure: ((_ name: String, _ object: Any?) -> Void)?
