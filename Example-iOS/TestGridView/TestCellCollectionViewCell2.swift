@@ -31,11 +31,8 @@ class TestCellCollectionViewCell2: UICollectionViewCell, PkhGridViewProtocol {
     }
     
     @IBAction func onButton(_ sender: UIButton) {
-        actionClosure?("image Button", data)
+        actionClosure?("CustomView Button", data)
     }
     
-    @IBAction func onButton2(_ sender: UIButton) {
-        actionClosure?("label Button", data)
-    }
 
 }

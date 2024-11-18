@@ -5,7 +5,7 @@
 //  Created by pkh on 29/08/2019.
 //  Copyright © 2019 emart. All rights reserved.
 //
-
+#if canImport(UIKit)
 import UIKit
 
 public class GridViewData: NSObject {
@@ -433,7 +433,7 @@ extension UIView {
         return view as! T
     }
     
-    class func fromXibSize() -> CGSize {
+    public class func fromXibSize() -> CGSize {
         return fromXib(cache: true).frame.size
     }
 
@@ -536,3 +536,4 @@ extension NSObject {
     }
 }
 
+#endif

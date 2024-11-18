@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		202D607E2CC6223900756F1D /* TestCellCollectionViewCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 202D607D2CC6223900756F1D /* TestCellCollectionViewCell2.xib */; };
 		202D607F2CC6223900756F1D /* TestCellCollectionViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D607C2CC6223900756F1D /* TestCellCollectionViewCell2.swift */; };
-		20BA5B612CC7357E0064C80B /* PkhGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA5B5E2CC7357E0064C80B /* PkhGridView.swift */; };
+		208236902CEAF43600C4F065 /* PkhGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2082368D2CEAF43600C4F065 /* PkhGridView.swift */; };
 		520F384E21228F100081B956 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F384D21228F100081B956 /* AppDelegate.swift */; };
 		520F385021228F100081B956 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520F384F21228F100081B956 /* ViewController.swift */; };
 		520F385321228F100081B956 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 520F385121228F100081B956 /* Main.storyboard */; };
@@ -22,7 +22,7 @@
 /* Begin PBXFileReference section */
 		202D607C2CC6223900756F1D /* TestCellCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCellCollectionViewCell2.swift; sourceTree = "<group>"; };
 		202D607D2CC6223900756F1D /* TestCellCollectionViewCell2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestCellCollectionViewCell2.xib; sourceTree = "<group>"; };
-		20BA5B5E2CC7357E0064C80B /* PkhGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PkhGridView.swift; sourceTree = "<group>"; };
+		2082368D2CEAF43600C4F065 /* PkhGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PkhGridView.swift; sourceTree = "<group>"; };
 		520F384A21228F100081B956 /* TestGridView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestGridView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		520F384D21228F100081B956 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		520F384F21228F100081B956 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -45,28 +45,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		20BA5B5F2CC7357E0064C80B /* PkhGridView */ = {
+		204164302CEAD95100E34ED0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				20BA5B5E2CC7357E0064C80B /* PkhGridView.swift */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2082368E2CEAF43600C4F065 /* PkhGridView */ = {
+			isa = PBXGroup;
+			children = (
+				2082368D2CEAF43600C4F065 /* PkhGridView.swift */,
 			);
 			path = PkhGridView;
 			sourceTree = "<group>";
 		};
-		20BA5B602CC7357E0064C80B /* Sources */ = {
+		2082368F2CEAF43600C4F065 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				20BA5B5F2CC7357E0064C80B /* PkhGridView */,
+				2082368E2CEAF43600C4F065 /* PkhGridView */,
 			);
 			name = Sources;
 			path = ../Sources;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		520F384121228F100081B956 = {
 			isa = PBXGroup;
 			children = (
-				20BA5B602CC7357E0064C80B /* Sources */,
+				2082368F2CEAF43600C4F065 /* Sources */,
 				520F384C21228F100081B956 /* TestGridView */,
+				204164302CEAD95100E34ED0 /* Frameworks */,
 				520F384B21228F100081B956 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -171,7 +179,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20BA5B612CC7357E0064C80B /* PkhGridView.swift in Sources */,
+				208236902CEAF43600C4F065 /* PkhGridView.swift in Sources */,
 				520F385021228F100081B956 /* ViewController.swift in Sources */,
 				202D607F2CC6223900756F1D /* TestCellCollectionViewCell2.swift in Sources */,
 				529DF5F224EF961300A15869 /* TestCellCollectionViewCell.swift in Sources */,
@@ -323,7 +331,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = TestGridView/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -344,7 +352,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = TestGridView/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

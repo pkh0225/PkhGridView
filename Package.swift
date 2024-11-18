@@ -5,21 +5,26 @@ import PackageDescription
 
 let package = Package(
     name: "PkhGridView",
+    platforms: [
+        .iOS(.v11) // iOS 11 이상 지원
+    ],
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "PkhGridView",
-            targets: ["PkhGridView"]),
+            targets: ["PkhGridView"]
+        ),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+        // 외부 종속성 추가 시 여기에 작성
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "PkhGridView",
-            dependencies: [])
+            dependencies: [],
+            path: "Sources", // 소스 경로를 명시적으로 설정
+            exclude: [],     // 제외할 파일이나 디렉토리 설정
+            resources: [],   // 리소스 파일 추가 시 필요
+            swiftSettings: [] // Swift 관련 추가 설정
+        )
     ]
 )
