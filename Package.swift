@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "PkhGridView",
     platforms: [
-        .iOS(.v12) // iOS 11 이상 지원
+        .iOS(.v12)
     ],
     products: [
         .library(
