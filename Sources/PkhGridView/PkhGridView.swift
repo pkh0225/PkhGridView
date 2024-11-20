@@ -430,7 +430,7 @@ public class ViewCacheManager {
 }
 
 extension PkhGridViewProtocol where Self: UIView {
-    static func fromXib(cache: Bool = false) -> Self {
+    public static func fromXib(cache: Bool = false) -> Self {
         return fromXib(cache: cache, as: self)
     }
 
@@ -472,7 +472,7 @@ extension CGSize {
     }
 }
 
-extension UIView {
+extension PkhGridView {
     var isHeightConstraint: Bool {
         if let _ = self.constraints.first(where: { $0.firstAttribute == .height }) {
             return true
@@ -514,7 +514,7 @@ extension UIView {
 
 extension Array {
     ///   Gets the object at the specified index, if it exists.
-    public subscript(safe index: Int?) -> Element? {
+    subscript(safe index: Int?) -> Element? {
         guard let index else { return nil }
         if indices.contains(index) {
             return self[index]
@@ -548,11 +548,11 @@ extension Array {
 }
 
 extension NSObject {
-    public var className: String {
+    var className: String {
         return String(describing: type(of:self))
     }
 
-    public class var className: String {
+    class var className: String {
         return String(describing: self)
     }
 }
