@@ -414,12 +414,12 @@ public class PkhGridView: UIView {
 public class ViewCacheManager {
     static var cacheViewNibs: NSCache<NSString, UIView> = {
         var c = NSCache<NSString, UIView>()
-        c.countLimit = 300
+        c.countLimit = 500
         return c
     }()
     static var cacheNibs: NSCache<NSString, UINib> = {
         var c = NSCache<NSString, UINib>()
-        c.countLimit = 300
+        c.countLimit = 500
         return c
     }()
 
@@ -429,12 +429,12 @@ public class ViewCacheManager {
     }
 }
 
-extension UIView {
-    class func fromXib(cache: Bool = false) -> Self {
+extension PkhGridViewProtocol where Self: UIView {
+    static func fromXib(cache: Bool = false) -> Self {
         return fromXib(cache: cache, as: self)
     }
-    
-    private class func fromXib<T>(cache: Bool = false, as type: T.Type) -> T {
+
+    private static func fromXib<T>(cache: Bool = false, as type: T.Type) -> T {
         if cache, let view = ViewCacheManager.cacheViewNibs.object(forKey: self.className as NSString) {
             return view as! T
         }
@@ -447,7 +447,6 @@ extension UIView {
                 let view = nib.instantiate(withOwner: nil, options: nil).first as! T
 
                 ViewCacheManager.cacheNibs.setObject(nib, forKey: self.className as NSString)
-//                let view: UIView = Bundle.main.loadNibNamed(self.className, owner: nil, options: nil)!.first as! UIView
                 if cache {
                     ViewCacheManager.cacheViewNibs.setObject(view as! UIView, forKey: self.className as NSString)
                 }
@@ -456,8 +455,8 @@ extension UIView {
         }
         fatalError("\(className) XIB File Not Exist")
     }
-    
-    public class func fromXibSize() -> CGSize {
+
+    public static func fromXibSize() -> CGSize {
         return fromXib(cache: true).frame.size
     }
 }
@@ -527,7 +526,7 @@ extension Array {
 }
 
 
-@inline(__always) public func swiftClassFromString(_ className: String, bundleName: String = "") -> AnyClass? {
+@inline(__always) func swiftClassFromString(_ className: String, bundleName: String = "") -> AnyClass? {
 
     // get the project name
     if  let appName = Bundle.main.object(forInfoDictionaryKey:"CFBundleName") as? String {
