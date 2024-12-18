@@ -29,22 +29,22 @@ public class GridViewData: NSObject {
         self.actionClosure = actionClosure
     }
 
-    public func setContentObj(_ contentObj: Any?) -> Self {
+    public func contentObj(_ contentObj: Any?) -> Self {
         self.contentObj = contentObj
         return self
     }
 
-    public func setSubData(_ subData: [String: Any]?) -> Self {
+    public func subData(_ subData: [String: Any]?) -> Self {
         self.subData = subData
         return self
     }
 
-    public func setCellType(_ cellType: PkhGridViewProtocol.Type?) -> Self {
+    public func cellType(_ cellType: PkhGridViewProtocol.Type?) -> Self {
         self.cellType = cellType
         return self
     }
 
-    public func setActionClosure(_ actionClosure: ((_ name: String, _ object: Any?) -> Void)?) -> Self {
+    public func actionClosure(_ actionClosure: ((_ name: String, _ object: Any?) -> Void)?) -> Self {
         self.actionClosure = actionClosure
         return self
     }
@@ -58,7 +58,7 @@ public class GridViewListData: NSObject {
         self.itemList = itemList
     }
 
-    public func setItmeList(_ itemList: [GridViewData]) -> Self {
+    public func itmeList(_ itemList: [GridViewData]) -> Self {
         self.itemList = itemList
         return self
     }

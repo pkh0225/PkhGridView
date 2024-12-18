@@ -24,9 +24,8 @@ class ViewController: UIViewController {
         // 그리드뷰에 셋팅된 뷰를 사용하기에 CellType을 따호 하지 않는다.
         for item in texts {
             let gridViewData = GridViewData()
-                .setContentObj(item)
-                .setSubData(nil)
-                .setActionClosure( { [weak self] (name, object) in
+                .contentObj(item)
+                .actionClosure( { [weak self] (name, object) in
                     guard let self else { return }
                     self.showAlert(name: name, object: object)
                 })
@@ -35,10 +34,9 @@ class ViewController: UIViewController {
 
         // 그리드뷰에 셋팅된 뷰를 사용하지 않고 커스트 다른 셀을 추가 한다.
         let gridViewData = GridViewData()
-            .setContentObj("CustomView")
-            .setSubData(nil)
-            .setCellType(TestCellCollectionViewCell2.self)
-            .setActionClosure( { [weak self] (name, object) in
+            .contentObj("CustomView")
+            .cellType(TestCellCollectionViewCell2.self)
+            .actionClosure( { [weak self] (name, object) in
                 guard let self else { return }
                 self.showAlert(name: name, object: object)
             })
